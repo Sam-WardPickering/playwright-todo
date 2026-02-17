@@ -1,17 +1,17 @@
 import { test, expect } from '@playwright/test';
 
-test('test adding todos', async ({ page }) => {
+test('test adding todos @add', async ({ page }) => {
   await page.goto('');
 
   const newTodo = page.getByTestId('text-input');
   
-  await newTodo.fill('Go for walk');
+  await newTodo.pressSequentially('Go for walk');
   await newTodo.press('Enter');
  
-  await newTodo.fill('Playwright Study');
+  await newTodo.pressSequentially('Playwright Study');
   await newTodo.press('Enter');
   
-  await newTodo.fill('ISTQB Cert Study');
+  await newTodo.pressSequentially('ISTQB Cert Study');
   await newTodo.press('Enter');
 
 
