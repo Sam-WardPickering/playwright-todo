@@ -8,13 +8,8 @@ async function addTodo(page, text) {
 
 
 async function completeTodo(page, text) {
-    const todoItem = await page.getByRole('listitem').filter({ hasText: text }).getByTestId('todo-item-toggle');
+    const todoItem = page.getByRole('listitem').filter({ hasText: text }).getByTestId('todo-item-toggle');
     await todoItem.check();
-};
-
-
-async function verifyTodos(page, text) {
-    await expect(page.getByTestId('todo-list')).toContainText(text);
 };
 
 
@@ -28,7 +23,7 @@ const todos = [
 ];
 
 
-test('test adding todos @add', async ({ page }) => {
+test('adds & completes todos', async ({ page }) => {
     await page.goto('');
 
     // Add todos
@@ -37,9 +32,7 @@ test('test adding todos @add', async ({ page }) => {
     };
 
     // Verify todos
-    for (const todo of todos) {
-        await verifyTodos(page, todo)
-    };
+    await expect(page.getByTestId('todo-item')).toHaveText(todos);
 
     // Confirm expected number of todos exist
     await expect(page.getByTestId('todo-item')).toHaveCount(todos.length);
