@@ -6,6 +6,13 @@ async function addTodo(page, text) {
     await input.press('Enter');
 };
 
+
+async function completeTodo(page, text) {
+    const todoItem = await page.getByRole('listitem').filter({ hasText: text }).getByTestId('todo-item-toggle');
+    todoItem.check();
+};
+
+
 const todos = [
     'Go for walk',
     'Playwright Study',
@@ -13,18 +20,26 @@ const todos = [
     'Grocery Shopping',
     'Meditate'
 
-]
+];
+
 
 test('test adding todos @add', async ({ page }) => {
-  await page.goto('');
+    await page.goto('');
 
-  for(const todo of todos) {
-    await addTodo(page, todo);
-  };
+    // Add todos
+    for(const todo of todos) {
+        await addTodo(page, todo);
+    };
 
-  await expect(page.getByText('Go for walk')).toBeVisible();
-  await expect(page.getByTestId('todo-list')).toContainText('Playwright Study');
+    await expect(page.getByText('Go for walk')).toBeVisible();
+    await expect(page.getByTestId('todo-list')).toContainText('Playwright Study');
 
-  await page.pause();
+    // Complete todos
+    for(const todo of todos) {
+        await completeTodo(page, todo);
+    }
+
+    const toDoList = page.getByTestId('todo-list');
+    expect(toDoList).toBeEmpty();
 
 });
