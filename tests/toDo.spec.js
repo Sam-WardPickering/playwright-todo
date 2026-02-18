@@ -13,6 +13,11 @@ async function completeTodo(page, text) {
 };
 
 
+async function verifyTodos(page, text) {
+    await expect(page.getByTestId('todo-list')).toContainText(text);
+};
+
+
 const todos = [
     'Go for walk',
     'Playwright Study',
@@ -31,8 +36,10 @@ test('test adding todos @add', async ({ page }) => {
         await addTodo(page, todo);
     };
 
-    await expect(page.getByText('Go for walk')).toBeVisible();
-    await expect(page.getByTestId('todo-list')).toContainText('Playwright Study');
+    // Verify todos
+    for (const todo of todos) {
+        await verifyTodos(page, todo)
+    };
 
     // Confirm expected number of todos exist
     await expect(page.getByTestId('todo-item')).toHaveCount(todos.length);
@@ -40,7 +47,7 @@ test('test adding todos @add', async ({ page }) => {
     // Complete todos
     for(const todo of todos) {
         await completeTodo(page, todo);
-    }
+    };
 
     // Navigate to active todos
     await page.getByRole('link', { name: 'Active' }).click();
