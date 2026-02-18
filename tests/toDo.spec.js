@@ -34,9 +34,6 @@ test('adds & completes todos', async ({ page }) => {
     // Verify todos
     await expect(page.getByTestId('todo-item')).toHaveText(todos);
 
-    // Confirm expected number of todos exist
-    await expect(page.getByTestId('todo-item')).toHaveCount(todos.length);
-
     // Complete todos
     for(const todo of todos) {
         await completeTodo(page, todo);
@@ -47,7 +44,5 @@ test('adds & completes todos', async ({ page }) => {
 
     // Confirm no active todos
     await expect(page.getByTestId('todo-item')).toHaveCount(0);
-
-    // await page.pause();
 
 });
