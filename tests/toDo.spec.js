@@ -42,9 +42,9 @@ test('test adding todos @add', async ({ page }) => {
     // Navigate to active todos
     await page.getByRole('link', { name: 'Active' }).click();
 
-    const activeTodos = await page.getByTestId('todo-list');
-    // expect(toDoList).toBeEmpty();
-    console.log(activeTodos);
+    // Confirm not active todos
+    const activeTodos = page.getByTestId('todo-item');
+    await expect(activeTodos).toHaveCount(0);
 
     await page.pause();
 
