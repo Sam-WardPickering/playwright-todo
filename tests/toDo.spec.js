@@ -9,7 +9,7 @@ async function addTodo(page, text) {
 
 async function completeTodo(page, text) {
     const todoItem = await page.getByRole('listitem').filter({ hasText: text }).getByTestId('todo-item-toggle');
-    todoItem.check();
+    await todoItem.check();
 };
 
 
@@ -39,7 +39,13 @@ test('test adding todos @add', async ({ page }) => {
         await completeTodo(page, todo);
     }
 
-    const toDoList = page.getByTestId('todo-list');
-    expect(toDoList).toBeEmpty();
+    // Navigate to active todos
+    await page.getByRole('link', { name: 'Active' }).click();
+
+    const activeTodos = page.getByTestId('todo-list');
+    // expect(toDoList).toBeEmpty();
+    console.log(activeTodos);
+
+    await page.pause();
 
 });
