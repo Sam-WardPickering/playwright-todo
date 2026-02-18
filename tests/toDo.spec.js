@@ -34,6 +34,9 @@ test('test adding todos @add', async ({ page }) => {
     await expect(page.getByText('Go for walk')).toBeVisible();
     await expect(page.getByTestId('todo-list')).toContainText('Playwright Study');
 
+    // Confirm expected number of todos exist
+    await expect(page.getByTestId('todo-item')).toHaveCount(todos.length);
+
     // Complete todos
     for(const todo of todos) {
         await completeTodo(page, todo);
@@ -42,10 +45,9 @@ test('test adding todos @add', async ({ page }) => {
     // Navigate to active todos
     await page.getByRole('link', { name: 'Active' }).click();
 
-    // Confirm not active todos
-    const activeTodos = page.getByTestId('todo-item');
-    await expect(activeTodos).toHaveCount(0);
+    // Confirm no active todos
+    await expect(page.getByTestId('todo-item')).toHaveCount(0);
 
-    await page.pause();
+    // await page.pause();
 
 });
