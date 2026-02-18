@@ -9,7 +9,10 @@ async function addTodo(page, text) {
 const todos = [
     'Go for walk',
     'Playwright Study',
-    'ISTQB Cert Study'
+    'ISTQB Cert Study',
+    'Grocery Shopping',
+    'Meditate'
+
 ]
 
 test('test adding todos @add', async ({ page }) => {
@@ -21,5 +24,7 @@ test('test adding todos @add', async ({ page }) => {
 
   await expect(page.getByText('Go for walk')).toBeVisible();
   await expect(page.getByTestId('todo-list')).toContainText('Playwright Study');
+
+  await page.pause();
 
 });
