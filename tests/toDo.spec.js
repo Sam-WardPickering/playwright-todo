@@ -1,8 +1,6 @@
 import { test, expect } from '@playwright/test';
 import todoData from '../todos.json' assert { type: 'json' };
 
-const todos = todoData.todoListItems;
-
 async function addTodo(page, text) {
     const input = page.getByTestId('text-input');
     await input.pressSequentially(text);
@@ -14,6 +12,17 @@ async function completeTodo(page, text) {
     const todoItem = page.getByRole('listitem').filter({ hasText: text }).getByTestId('todo-item-toggle');
     await todoItem.check();
 };
+
+const todos = todoData.todoListItems;
+
+test.beforeAll('Validate JSON data', async () => {
+    const todos = todoData.todoListItems;
+
+    expect(Array.isArray(todos)).toBe(true);
+    expect(todos.length).toBeGreaterThan(0);
+
+});
+
 
 test('adds & completes todos', async ({ page }) => {
     await page.goto('');
