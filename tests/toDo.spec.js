@@ -34,6 +34,7 @@ test('adds & completes todos', async ({ page }) => {
 
     await test.step('Verify todos', async () => {
         await expect(page.getByTestId('todo-item')).toHaveText(todos);
+        await expect(page.locator('.todo-count')).toContainText('5');
     });
 
     await test.step('Complete todos', async () => {
