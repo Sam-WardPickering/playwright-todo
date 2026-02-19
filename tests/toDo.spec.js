@@ -45,11 +45,15 @@ test('adds & completes todos', async ({ page }) => {
     await test.step('Verify no active todos', async () => {
         await page.getByRole('link', { name: 'Active' }).click();
         await expect(page.getByTestId('todo-item')).toHaveCount(0);
+
+        await expect(page.locator('.todo-count')).toContainText('0');
     });
 
     await test.step('Verify completed todos', async () => {
         await page.getByRole('link', { name: 'Completed' }).click();
         await expect(page.getByTestId('todo-item')).toHaveCount(todos.length);
     });
+
+    await page.pause();
     
 });
