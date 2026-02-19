@@ -1,4 +1,7 @@
 import { test, expect } from '@playwright/test';
+import todoData from '../todos.json' assert { type: 'json' };
+
+const todos = todoData.todoListItems;
 
 async function addTodo(page, text) {
     const input = page.getByTestId('text-input');
@@ -12,22 +15,11 @@ async function completeTodo(page, text) {
     await todoItem.check();
 };
 
-
-const todos = [
-    'Go for walk',
-    'Playwright Study',
-    'ISTQB Cert Study',
-    'Grocery Shopping',
-    'Meditate'
-
-];
-
-
 test('adds & completes todos', async ({ page }) => {
     await page.goto('');
 
     const items = page.getByTestId('todo-item');
-    const count = page.locator('.todo-count');
+    const counter = page.locator('.todo-count');
 
 
     await test.step('Add todos', async () => {
@@ -38,7 +30,7 @@ test('adds & completes todos', async ({ page }) => {
 
     await test.step('Verify todos', async () => {
         await expect(items).toHaveText(todos);
-        await expect(count).toHaveText(new RegExp(`^${todos.length}\\s+item`));
+        await expect(counter).toHaveText(new RegExp(`^${todos.length}\\s+item`));
     });
 
     await test.step('Complete todos', async () => {
@@ -51,12 +43,13 @@ test('adds & completes todos', async ({ page }) => {
         await page.getByRole('link', { name: 'Active' }).click();
         await expect(items).toHaveCount(0);
 
-        await expect(count).toContainText('0');
+        await expect(counter).toHaveText(/^0\s+item/);
     });
 
     await test.step('Verify completed todos', async () => {
         await page.getByRole('link', { name: 'Completed' }).click();
         await expect(items).toHaveCount(todos.length);
+        await expect(items).toHaveText(todos);
     });
     
 });
