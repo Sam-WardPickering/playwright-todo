@@ -26,6 +26,10 @@ const todos = [
 test('adds & completes todos', async ({ page }) => {
     await page.goto('');
 
+    const items = page.getByTestId('todo-item');
+    const count = page.locator('.todo-count');
+
+
     await test.step('Add todos', async () => {
         for(const todo of todos) {
             await addTodo(page, todo);
@@ -33,8 +37,8 @@ test('adds & completes todos', async ({ page }) => {
     });
 
     await test.step('Verify todos', async () => {
-        await expect(page.getByTestId('todo-item')).toHaveText(todos);
-        await expect(page.locator('.todo-count')).toContainText(todos.length.toString());
+        await expect(items).toHaveText(todos);
+        await expect(count).toHaveText(new RegExp(`^${todos.length}\\s+item`));
     });
 
     await test.step('Complete todos', async () => {
@@ -45,14 +49,14 @@ test('adds & completes todos', async ({ page }) => {
 
     await test.step('Verify no active todos', async () => {
         await page.getByRole('link', { name: 'Active' }).click();
-        await expect(page.getByTestId('todo-item')).toHaveCount(0);
+        await expect(items).toHaveCount(0);
 
-        await expect(page.locator('.todo-count')).toContainText('0');
+        await expect(count).toContainText('0');
     });
 
     await test.step('Verify completed todos', async () => {
         await page.getByRole('link', { name: 'Completed' }).click();
-        await expect(page.getByTestId('todo-item')).toHaveCount(todos.length);
+        await expect(items).toHaveCount(todos.length);
     });
     
 });
