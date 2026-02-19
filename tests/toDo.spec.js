@@ -42,11 +42,8 @@ test('adds & completes todos', async ({ page }) => {
         };
     });
 
-    test.step('Verify completed todos', async () => {
-        // Navigate to active todos
+    test.step('Verify no active todos', async () => {
         await page.getByRole('link', { name: 'Active' }).click();
-
-        // Confirm no active todos
         await expect(page.getByTestId('todo-item')).toHaveCount(0);
     });
     
