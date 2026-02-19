@@ -34,7 +34,7 @@ test('adds & completes todos', async ({ page }) => {
 
     await test.step('Verify todos', async () => {
         await expect(page.getByTestId('todo-item')).toHaveText(todos);
-        await expect(page.locator('.todo-count')).toContainText('5');
+        await expect(page.locator('.todo-count')).toContainText(todos.length.toString());
     });
 
     await test.step('Complete todos', async () => {
@@ -54,7 +54,5 @@ test('adds & completes todos', async ({ page }) => {
         await page.getByRole('link', { name: 'Completed' }).click();
         await expect(page.getByTestId('todo-item')).toHaveCount(todos.length);
     });
-
-    await page.pause();
     
 });
