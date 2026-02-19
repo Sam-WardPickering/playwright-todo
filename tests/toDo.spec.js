@@ -26,23 +26,28 @@ const todos = [
 test('adds & completes todos', async ({ page }) => {
     await page.goto('');
 
-    // Add todos
-    for(const todo of todos) {
-        await addTodo(page, todo);
-    };
+    test.step('Add todos', async () => {
+        for(const todo of todos) {
+            await addTodo(page, todo);
+        };
+    });
 
-    // Verify todos
-    await expect(page.getByTestId('todo-item')).toHaveText(todos);
+    test.step('Verify todos', async () => {
+        await expect(page.getByTestId('todo-item')).toHaveText(todos);
+    });
 
-    // Complete todos
-    for(const todo of todos) {
-        await completeTodo(page, todo);
-    };
+    test.step('Complete todos', async () => {
+        for(const todo of todos) {
+            await completeTodo(page, todo);
+        };
+    });
 
-    // Navigate to active todos
-    await page.getByRole('link', { name: 'Active' }).click();
+    test.step('Verify completed todos', async () => {
+        // Navigate to active todos
+        await page.getByRole('link', { name: 'Active' }).click();
 
-    // Confirm no active todos
-    await expect(page.getByTestId('todo-item')).toHaveCount(0);
-
+        // Confirm no active todos
+        await expect(page.getByTestId('todo-item')).toHaveCount(0);
+    });
+    
 });
