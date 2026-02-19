@@ -16,11 +16,8 @@ async function completeTodo(page, text) {
 const todos = todoData.todoListItems;
 
 test.beforeAll('Validate JSON data', async () => {
-    const todos = todoData.todoListItems;
-
     expect(Array.isArray(todos)).toBe(true);
     expect(todos.length).toBeGreaterThan(0);
-
 });
 
 
